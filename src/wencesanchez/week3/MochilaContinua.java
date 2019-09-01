@@ -30,10 +30,9 @@ public class MochilaContinua {
             if (capacidadMochila == 0) return valorMaximoEnMochila;
             double elemento = Math.min(itemsCandidatos.get(i).getPeso(), capacidadMochila);
 
-            valorMaximoEnMochila += elemento * (
-                    itemsCandidatos.get(i).getValor() / itemsCandidatos.get(i).getPeso());
+            valorMaximoEnMochila += elemento * itemsCandidatos.get(i).getValor() / itemsCandidatos.get(i).getPeso();
 
-            itemsCandidatos.get(i).setPeso(itemsCandidatos.get(i).getPeso() - elemento);
+//            itemsCandidatos.get(i).setPeso(itemsCandidatos.get(i).getPeso() - elemento);
             capacidadMochila -= elemento;
         }
         return valorMaximoEnMochila;

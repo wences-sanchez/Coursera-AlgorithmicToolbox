@@ -13,7 +13,13 @@ public class ItemMochila implements Comparable<ItemMochila> {
     public int compareTo(ItemMochila o) {
         // Si this < o, devolver negativo
         // 10 < 20 ---> 10 - 20 = negativo.
-        return (int)( (this.valor / this.peso) - (o.valor / o.peso));
+        if ((this.valor / this.peso) < (o.valor / o.peso)) {
+            return -1;
+        }
+        if ((this.valor / this.peso) > (o.valor / o.peso)) {
+            return 1;
+        }
+        return 0;
     }
 
     public double getValor() {
