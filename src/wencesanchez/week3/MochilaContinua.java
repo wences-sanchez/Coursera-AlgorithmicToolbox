@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Esta es una implementación práctica del algoritmo que se pidió se codificase
+ * Esta es una implementación práctica del algoritmo que se pidió se codificase.
+ * Por esta razón no tiene los tests especificados aquí. Si no que están en las slides.
  */
 public class MochilaContinua {
     private final long numItems;
@@ -20,7 +21,7 @@ public class MochilaContinua {
         this.capacidadMochila = capacidadMochila;
         this.itemsCandidatos = new ArrayList<>(itemsCandidatos);
 
-        Collections.sort(itemsCandidatos);
+        Collections.sort(this.itemsCandidatos, Collections.reverseOrder());
     }
 
     public double obtenerValorMaximoEnMochila() {
@@ -51,7 +52,7 @@ public class MochilaContinua {
         }
 
         MochilaContinua mochilaContinua = new MochilaContinua(numItems,capacidadMochila,itemsCandidatos);
-        System.out.printf("%.4f", mochilaContinua.obtenerValorMaximoEnMochila());
+        System.out.printf("%.3f", mochilaContinua.obtenerValorMaximoEnMochila());
 
         scanner.close();
     }
