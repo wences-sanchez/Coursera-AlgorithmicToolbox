@@ -4,75 +4,57 @@ import java.util.Scanner;
 
 public class CarFueling {
 
-    private double kmsTotales;
-    private double depositoTotal;
-    private final int numCiudades;
-    private final double[] distancias;
+    private double _kmsTotales;
+    private double _depositoTotal;
+    private int _numCiudades;
+    private double[] _distancias;
+
+    public CarFueling() {}
 
     public CarFueling(double kmsTotales, double depositoTotal, int numCiudades, double[] distancias) {
-        this.kmsTotales = kmsTotales;
-        this.depositoTotal = depositoTotal;
-        this.numCiudades = numCiudades;
-        this.distancias = distancias.clone();
+        this._kmsTotales = kmsTotales;
+        this._depositoTotal = depositoTotal;
+        this._numCiudades = numCiudades;
+        this._distancias = new double[numCiudades+2];
+        this._distancias[0] = 0;
+        for(int i=1; i < numCiudades; i++) {
+            this._distancias[i+1] = distancias[i];
+        }
+        this._distancias[numCiudades] = kmsTotales;
     }
 
-    public long obtenerMinimoRepostajes() {
-        double depositoActual = depositoTotal;
-        double kmsRecorridos = 0;
+    public long obtenerMinimoRepostajes(int[] distancias, long numCiudades, double depositoTotal) {
         int indCiudadActual = 0;
-        int indCiudadMaxTemp = 0;
         long numRepostajes = 0;
-        while(indCiudadActual < numCiudades) {
-
-            while (indCiudadMaxTemp < numCiudades-1 && depositoActual >= distancias[indCiudadMaxTemp] - kmsRecorridos) {
-                depositoActual -= distancias[indCiudadMaxTemp] - kmsRecorridos;
-                kmsRecorridos = distancias[indCiudadMaxTemp];
-                // Actualizamos la variable del bucle while
-                indCiudadMaxTemp++;
+        while(indCiudadActual <= numCiudades) {
+            int indUltimaCiudad = indCiudadActual;
+            while (indCiudadActual <= numCiudades
+                    && depositoTotal >= distancias[indCiudadActual+1] - distancias[indUltimaCiudad]) {
+                indCiudadActual++;
             }
             // Si no podemos llegar a la siguiente ciudad (con el depósito lleno en esta casuística) devolvemos -1
-            if (indCiudadMaxTemp == numCiudades) {
-                if (depositoTotal < kmsTotales - distancias[numCiudades-1]) {
-                    return -1;
-                }
-            }
-            else if (depositoTotal < distancias[indCiudadMaxTemp] - distancias[indCiudadMaxTemp-1]) {
+            if (indCiudadActual == indUltimaCiudad) {
                 return -1;
             }
-            if (indCiudadMaxTemp == numCiudades-1) {
-
-                if (depositoActual >= distancias[indCiudadMaxTemp] - kmsRecorridos) {
-                    depositoActual -= distancias[indCiudadMaxTemp] - kmsRecorridos;
-                    kmsRecorridos = distancias[indCiudadMaxTemp];
-                    // indCiudadMaxTemp++;
-                }
-            }
-            else if (depositoActual <= distancias[indCiudadMaxTemp] - distancias[indCiudadMaxTemp-1]){
-                depositoActual = depositoTotal;
+            if (indCiudadActual <= numCiudades) {
                 numRepostajes++;
             }
-            indCiudadActual++;
-        }
-        // Si el depósito actual (que aquí es igual que total) es menor que lo que queda
-        if (depositoTotal < (kmsTotales - distancias[numCiudades-1])) {
-            return -1;
-        } // Si depositoTotal >= distancia
-        else if (depositoActual < kmsTotales - distancias[numCiudades-1]) {
-            numRepostajes++;
         }
         return numRepostajes;
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        double kmsTotales = scanner.nextDouble();
+        int kmsTotales = scanner.nextInt();
         double depositoTotal = scanner.nextDouble();
         int numCiudades = scanner.nextInt();
-        double[] distancias = new double[numCiudades];
-        for(int i=0; i < numCiudades; i++) {
-            distancias[i] = scanner.nextDouble();
+        int[] distancias = new int[numCiudades+2];
+        distancias[0] = 0;
+        for(int i=1; i <= numCiudades; i++) {
+            distancias[i] = scanner.nextInt();
         }
+        distancias[numCiudades+1] = kmsTotales;
 
-        System.out.println(new CarFueling(kmsTotales,depositoTotal,numCiudades,distancias).obtenerMinimoRepostajes());
+        System.out.println(new CarFueling().obtenerMinimoRepostajes(distancias,numCiudades,depositoTotal));
     }
 }
